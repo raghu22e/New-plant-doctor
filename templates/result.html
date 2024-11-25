@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Result - Plant Disease Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: #f0f2f5;
+        }
+        .result-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        .nav-btn {
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-left: 1rem;
+            transition: background-color 0.3s;
+        }
+        .nav-btn:hover {
+            background-color: #45a049;
+        }
+        .nav-btn.logout {
+            background-color: #dc3545;
+        }
+        .nav-btn.logout:hover {
+            background-color: #c82333;
+        }
+        .result-item {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+        .result-label {
+            font-weight: bold;
+            color: #495057;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        .result-value {
+            color: #212529;
+            font-size: 1.1em;
+        }
+        .probability-bar {
+            height: 20px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            margin-top: 5px;
+            position: relative;
+        }
+        .probability-fill {
+            height: 100%;
+            background-color: #4CAF50;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        .probability-text {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #000;
+            font-size: 0.9em;
+        }
+        .class-row {
+            margin-bottom: 1rem;
+        }
+        h2 {
+            margin: 0;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="result-container">
+        <div class="header">
+            <h2>Analysis Result</h2>
+            <div>
+                <a href="{{ url_for('upload') }}" class="nav-btn">New Upload</a>
+                <a href="{{ url_for('logout') }}" class="nav-btn logout">Logout</a>
+            </div>
+        </div>
+
+        <div class="result-item">
+            <span class="result-label">Original File:</span>
+            <span class="result-value">{{ original_path }}</span>
+        </div>
+
+        <div class="result-item">
+            <span class="result-label">Disease Classification Results:</span>
+            {% for class_name, probability in probabilities.items() %}
+            <div class="class-row">
+                <div>{{ class_name }}</div>
+                <div class="probability-bar">
+                    <div class="probability-fill" ></div>
+                    <span class="probability-text">{{ probability }}%</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

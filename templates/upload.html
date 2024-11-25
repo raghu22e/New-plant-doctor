@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Plant Disease Detection</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive;
+            background: #e0f7fa;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .upload-form {
+            margin-bottom: 2rem;
+            padding: 2rem;
+            border: 2px dashed #4CAF50;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .result-section {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+        .result-item {
+            margin-bottom: 1.5rem;
+        }
+        .result-title {
+            color: #2c3e50;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        .logout-btn {
+            padding: 0.5rem 1rem;
+            background: #dc3545;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .upload-btn {
+            padding: 1rem 2rem;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        li:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>🌿 Plant Disease Detective</h2>
+            <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="upload-form">
+            <h3>Upload your plant image!</h3>
+            <form method="POST" enctype="multipart/form-data">
+                <input type="file" name="file" accept=".png,.jpg,.jpeg,.JPG" required>
+                <input type="hidden" name="filepath" id="filepath">
+                <button type="submit" class="upload-btn">Upload and Analyze</button>
+            </form>
+        </div>
+
+        {% if result %}
+        <div class="result-section">
+            <div class="result-item">
+                <div class="result-title">🔍 Detected Disease:</div>
+                <div>{{ result.disease_class }}</div>
+            </div>
+
+            <div class="result-item">
+                <div class="result-title">⚠️ Precautions:</div>
+                <ul>
+                    {% for precaution in result.info.precautions %}
+                        <li>{{ precaution }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="result-item">
+                <div class="result-title">💊 Recommended Medicines:</div>
+                <ul>
+                    {% for medicine in result.info.medicines %}
+                        <li>{{ medicine }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        document.querySelector('input[type="file"]').addEventListener('change', function(e) {
+            document.getElementById('filepath').value = this.value;
+        });
+    </script>
+</body>
+</html>

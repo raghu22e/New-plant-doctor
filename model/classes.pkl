@@ -1,0 +1,18 @@
+import joblib
+
+classes = [
+    'Apple___Apple_scab',
+    'Apple___Black_rot',
+    'Apple___Cedar_apple_rust',
+    'Apple___healthy',
+    'Blueberry___healthy',
+    'Cherry_(including_sour)___healthy',
+    'Cherry_(including_sour)___Powdery_mildew'
+]
+
+# Create model directory if it doesn't exist
+import os
+os.makedirs('model', exist_ok=True)
+
+# Save classes to file
+joblib.dump(classes, 'model/classes.pkl')
